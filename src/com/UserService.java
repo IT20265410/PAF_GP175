@@ -7,6 +7,10 @@ import model.User;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -76,5 +80,22 @@ public class UserService {
 
 		String output = userObj.updateCustomer(userId, firstName, lastName, NIC, address, phone, email);
 		return output;
+	}
+	
+	@DELETE
+	@Path("/") 
+	@Consumes(MediaType.APPLICATION_XML) 
+	@Produces(MediaType.TEXT_PLAIN) 
+	public String deleteCustomer(String customerData) { 
+	
+		//Convert the input string to an XML document
+		Document doc = Jsoup.parse(customerData, "", Parser.xmlParser()); 
+	 
+		//Read the value from the element <itemID>
+		String userId = doc.select("userId").text(); 
+		
+		//Pass this itemID can call the deleteItem() method in the modeland
+		String output = userObj.deleteCustomer(userId); 
+		return output; 
 	}
 }
