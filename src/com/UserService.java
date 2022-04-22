@@ -63,7 +63,7 @@ public class UserService {
 
 	// view all customers
 	@GET
-	@Path("/")
+	@Path("/viewAllCustomers")
 	@Produces(MediaType.TEXT_HTML)
 	public String viewAllCustomers() {
 		return userObj.viewAllCustomers();
