@@ -20,6 +20,7 @@ public class UserService {
 	
 	User userObj = new User();
 	
+	//Add customer (registration)
 	@POST
 	@Path("/")
 	// To specify the input type as form data
@@ -30,16 +31,14 @@ public class UserService {
 	public String register(@FormParam("firstName") String firstName, 
 							@FormParam("lastName") String lastName,
 							@FormParam("NIC") String NIC, 
-							@FormParam("homeNo") String homeNo,
-							@FormParam("street") String street,
-							@FormParam("city") String city,
+							@FormParam("address") String address,
 							@FormParam("phone") int phone,
 							@FormParam("email") String email)
 	
 	{
 		// pass these values to the register() method, return into a String variable
 		// named output, which can be returned to the client as the response.
-		String output = userObj.register(firstName, lastName, NIC, homeNo,street,city,phone,email);
+		String output = userObj.register(firstName, lastName, NIC, address, phone, email);
 		return output;
 	}
 }

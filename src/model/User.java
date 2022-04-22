@@ -20,7 +20,7 @@ public class User {
 		return con;
 	}
 
-	public String register(String fname, String lname, String nic, String homeno, String street, String city, int phone, String email) {
+	public String register(String fname, String lname, String nic, String address , int phone, String email) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -29,8 +29,8 @@ public class User {
 			}
 			
 			// create a prepared statement
-			String query = " insert into user (`userId`,`firstName`,`lastName`,`NIC`,`homeNo`, `street`, `city`, `phone`, `email`)"
-					+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = " insert into users (`userId`,`firstName`,`lastName`,`NIC`,`address`, `phone`, `email`)"
+					+ " values (?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			// binding values
@@ -38,11 +38,9 @@ public class User {
 			preparedStmt.setString(2, fname);
 			preparedStmt.setString(3, lname);
 			preparedStmt.setString(4, nic);
-			preparedStmt.setString(5, homeno);
-			preparedStmt.setString(6, street);
-			preparedStmt.setString(7, city);
-			preparedStmt.setInt(8, phone);
-			preparedStmt.setString(9, email);
+			preparedStmt.setString(5, address);
+			preparedStmt.setInt(6, phone);
+			preparedStmt.setString(7, email);
 			
 			// execute the statement
 			preparedStmt.execute();
@@ -54,5 +52,5 @@ public class User {
 		}
 		return output;
 	}
-
+	
 }
