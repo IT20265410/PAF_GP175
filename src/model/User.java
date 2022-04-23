@@ -53,49 +53,52 @@ public class User {
 		return output;
 	}
 	
-//	public String readCustomer() {
-//		String output = "";
-//		try {
-//			Connection con = connect();
-//			if (con == null) {
-//				return "Error while connecting to the database for reading.";
-//			}
-//			// Prepare the html table to be displayed
-//			output = "<table border='1'><tr><th>First Name</th><th>Last Name</th>" + "<th>NIC</th>"
-//					+ "<th>Address</th>" + "<th>Phone</th>"+ "<th>Email</th>"+ "<th>Update</th>";
-//
-//			String query = "select * from users where userId=?";
-//			Statement stmt = con.createStatement();
-//			ResultSet rs = stmt.executeQuery(query);
-//			// iterate through the rows in the result set
-//			while (rs.next()) {
-//				String userId = Integer.toString(rs.getInt("userId"));
-//				String firstName = rs.getString("firstName");
-//				String lastName = rs.getString("lastName");
-//				String NIC = rs.getString("NIC");
-//				String address = rs.getString("address");
-//				String phone = Integer.toString(rs.getInt("phone"));
-//				String email = rs.getString("email");
-//				
-//				// Add into the html table
-//				output += "<tr><td>" + firstName + "</td>";
-//				output += "<td>" + lastName + "</td>";
-//				output += "<td>" + NIC + "</td>";
-//				output += "<td>" + address + "</td>";
-//				output += "<td>" + phone + "</td>";
-//				output += "<td>" + email + "</td>";
-//				// buttons
-//				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>";
-//			}
-//			con.close();
-//			// Complete the html table
-//			output += "</table>";
-//		} catch (Exception e) {
-//			output = "Error while reading the customer details.";
-//			System.err.println(e.getMessage());
-//		}
-//		return output;
-//	}
+	
+	public String viewCustomer(String userId) {
+		String output = "";
+		try {
+			Connection con = connect();
+			if (con == null) {
+				return "Error while connecting to the database for reading.";
+			}
+			// Prepare the html table to be displayed
+			output = "<table border='1'><tr><th>First Name</th><th>Last Name</th>" + "<th>NIC</th>"
+					+ "<th>Address</th>" + "<th>Phone</th>"+ "<th>Email</th>"+ "<th>Update</th>";
+
+			String query = "select * from users where userId= '" + userId +"' ";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the rows in the result set
+			while (rs.next()) {
+				String userid = Integer.toString(rs.getInt("userId"));
+				String firstName = rs.getString("firstName");
+    			String lastName = rs.getString("lastName");
+				String NIC = rs.getString("NIC");
+				String address = rs.getString("address");
+				String phone = Integer.toString(rs.getInt("phone"));
+				String email = rs.getString("email");
+			
+				// Add into the html table
+				output += "<tr><td>" + firstName + "</td>";
+				output += "<td>" + lastName + "</td>";
+				output += "<td>" + NIC + "</td>";
+				output += "<td>" + address + "</td>";
+				output += "<td>" + phone + "</td>";
+				output += "<td>" + email + "</td>";
+				// buttons
+				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>";
+			
+			}
+			con.close();
+			// Complete the html table
+			output += "</table>";
+		} catch (Exception e) {
+			output = "Error while reading the customer details.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 	
 	public String updateCustomer(String userid, String fname, String lname, String nic, String address, String phone, String email) {
 		String output = "";

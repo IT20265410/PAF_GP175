@@ -20,7 +20,15 @@ public class UserService {
 
 	User userObj = new User();
 
-	// Add customer (registration)
+	//view a particular customer details
+	@GET
+	@Path("/{userId}")
+	@Produces(MediaType.TEXT_HTML)
+	public String viewCustomer(@PathParam("userId") String userId) {
+		return userObj.viewCustomer(userId); 
+	}
+
+	//Add customer(registration)
 	@POST
 	@Path("/")
 	// To specify the input type as form data
@@ -39,11 +47,12 @@ public class UserService {
 		return output;
 	}
 
+	//Update customer details
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updateItem(String customerData) {
+	public String updateCustomer(String customerData) {
 
 		// Convert the input string to a JSON object
 		JsonObject UserObject = new JsonParser().parse(customerData).getAsJsonObject();
@@ -61,7 +70,7 @@ public class UserService {
 		return output;
 	}
 
-	// view all customers
+	//Admin side view all customers 
 	@GET
 	@Path("/viewAllCustomers")
 	@Produces(MediaType.TEXT_HTML)
@@ -69,6 +78,7 @@ public class UserService {
 		return userObj.viewAllCustomers();
 	}
 
+	//Delete a customer account
 	@DELETE
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
