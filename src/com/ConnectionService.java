@@ -1,4 +1,3 @@
-//To implement the RESTful API
 package com;
 
 import model.Connections;
@@ -20,13 +19,6 @@ public class ConnectionService {
 
 	Connections conObj = new Connections();
 
-	//view a particular connection details
-	@GET
-	@Path("/{conId}")
-	@Produces(MediaType.TEXT_HTML)
-	public String viewConnection(@PathParam("conId") String conId) {
-		return conObj.viewConnection(conId); 
-	}
 
 	//Add connection 
 	@POST
@@ -36,13 +28,13 @@ public class ConnectionService {
 	@Produces(MediaType.TEXT_PLAIN)
 
 	// To specify the form elements as the parameters to the register() method
-	public String register(@FormParam("conName") String conName, @FormParam("conType") String conType,
-			@FormParam("conDesc") String conDesc)
+	public String addConnection(@FormParam("conName") String conName, @FormParam("conType") String conType,
+			@FormParam("conDesc") String conDesc, @FormParam("conAdminId") int conAdminId)
 
 	{
 		// pass these values to the register() method, return into a String variable
 		// named output, which can be returned to the client as the response.
-		String output = conObj.register(conName, conName, conType);
+		String output = conObj.addConnection(conName, conName, conType, conAdminId);
 		return output;
 	}
 
@@ -61,15 +53,16 @@ public class ConnectionService {
 		String conName = ConObject.get("conName").getAsString();
 		String conType = ConObject.get("conType").getAsString();
 		String conDesc = ConObject.get("conDesc").getAsString();
+		String conAdminId = ConObject.get("conAdminId").getAsString();
 		
 
-		String output = conObj.updateConnections(conId, conName, conType, conDesc);
+		String output = conObj.updateConnections(conId, conName, conType, conDesc, conAdminId);
 		return output;
 	}
 
 	//view all connections
 	@GET
-	@Path("/viewAllCustomers")
+	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
 	public String viewAllConnections() {
 		return conObj.viewAllConnections();
@@ -88,7 +81,7 @@ public class ConnectionService {
 		// Read the value from the element <conId>
 		String conId = doc.select("conId").text();
 
-		// Pass this userId can call the deleteCustomer() method in the model
+		// Pass this userId can call the deleteConnection() method in the model
 		String output = conObj.deleteConnection(conId);
 		return output;
 	}
