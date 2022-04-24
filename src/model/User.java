@@ -20,6 +20,7 @@ public class User {
 		return con;
 	}
 
+	//user add method
 	public String register(String fname, String lname, String nic, String address , int phone, String email) {
 		String output = "";
 		try {
@@ -29,7 +30,7 @@ public class User {
 			}
 			
 			// create a prepared statement
-			String query = " insert into users (`userId`,`firstName`,`lastName`,`NIC`,`address`, `phone`, `email`)"
+			String query = " insert into customer (`userId`,`firstName`,`lastName`,`NIC`,`address`, `phone`, `email`)"
 					+ " values (?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
@@ -53,7 +54,7 @@ public class User {
 		return output;
 	}
 	
-	
+	//get particular customer details
 	public String viewCustomer(String userId) {
 		String output = "";
 		try {
@@ -65,7 +66,7 @@ public class User {
 			output = "<table border='1'><tr><th>First Name</th><th>Last Name</th>" + "<th>NIC</th>"
 					+ "<th>Address</th>" + "<th>Phone</th>"+ "<th>Email</th>"+ "<th>Update</th>";
 
-			String query = "select * from users where userId= '" + userId +"' ";
+			String query = "select * from customer where userId= '" + userId +"' ";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
@@ -100,6 +101,7 @@ public class User {
 		return output;
 	}
 	
+	//update customer details
 	public String updateCustomer(String userid, String fname, String lname, String nic, String address, String phone, String email) {
 		String output = "";
 		try {
@@ -108,7 +110,7 @@ public class User {
 				return "Error while connecting to the database for updating.";
 			}
 			// create a prepared statement
-			String query = "UPDATE users SET firstName=?,lastName=?,NIC=?,address=?,phone=?,email=? WHERE userId=?";
+			String query = "UPDATE customer SET firstName=?,lastName=?,NIC=?,address=?,phone=?,email=? WHERE userId=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
 			preparedStmt.setString(1, fname);
@@ -130,6 +132,7 @@ public class User {
 		return output;
 	}
 	
+	//admin side view all customers
 	public String viewAllCustomers() {
 		String output = "";
 		try {
@@ -139,10 +142,10 @@ public class User {
 			}
 			
 			// Prepare the html table to be displayed
-			output = "<table border='1'><tr><th>First Name</th><th>Last Name</th>" + "<th>NIC</th>"
+			output = "<table border='1'><tr><th>User ID</th><th>First Name</th><th>Last Name</th>" + "<th>NIC</th>"
 					+ "<th>Address</th>" + "<th>Phone</th>" + "<th>Emai</th>" + "<th>Remove</th></tr>";
 
-			String query = "select * from users";
+			String query = "select * from customer";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
@@ -157,7 +160,8 @@ public class User {
 				String email = rs.getString("email");
 				
 				// Add into the html table
-				output += "<tr><td>" + firstName + "</td>";
+				output += "<tr><td>" + userId + "</td>";
+				output += "<td>" + firstName + "</td>";
 				output += "<td>" + lastName + "</td>";
 				output += "<td>" + NIC + "</td>";
 				output += "<td>" + address + "</td>";
@@ -177,6 +181,7 @@ public class User {
 		return output;
 	}
 	
+	//admin side delete a customer
 	public String deleteCustomer(String userId) {
 		String output = "";
 		try {
@@ -185,7 +190,7 @@ public class User {
 				return "Error while connecting to the database for deleting.";
 			}
 			// create a prepared statement
-			String query = "delete from users where userId=?";
+			String query = "delete from customer where userId=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
 			preparedStmt.setInt(1, Integer.parseInt(userId));
