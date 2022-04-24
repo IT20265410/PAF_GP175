@@ -28,20 +28,20 @@ public class BillService {
 		return billObj.viewBill(billId); 
 	}
 
-	//Add bill(registration)
+	//Add bill
 	@POST
 	@Path("/")
 	// To specify the input type as form data
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 
-	// To specify the form elements as the parameters to the register() method
+	// To specify the form elements as the parameters to the add bill method
 	public String addBill(@FormParam("issueDate") String issueDate, @FormParam("unit") int unit,
 			@FormParam("balance") Float balance, @FormParam("amountToPay") Float amountToPay, @FormParam("totalAmount") Float totalAmount,
 			@FormParam("customerId") int customerId)
 
 	{
-		// pass these values to the register() method, return into a String variable
+		// pass these values to the add bill method, return into a String variable
 		// named output, which can be returned to the client as the response.
 		String output = billObj.addBill(issueDate, unit, balance, amountToPay, totalAmount, customerId);
 		return output;
