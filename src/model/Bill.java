@@ -65,11 +65,10 @@ public class Bill {
 			output = "<table border='1'><tr><th>Issue Date</th><th>Unit</th>" + "<th>Balance</th>"
 					+ "<th>Amount To Pay</th>" + "<th>Total Amount</th>"+ "<th>Customer Id</th>"+ "<th>Update</th>";
 
-			String query = "select * from users where userId= '" + billId +"' ";
+			String query = "select * from bill where billId= '" + billId +"' ";
 			Statement stmt = con.createStatement();
-			ResultSet totalAmount = stmt.executeQuery(query);
+			ResultSet rs = stmt.executeQuery(query);
 			
-			ResultSet rs = null;
 			// iterate through the rows in the result set
 			while (rs.next()) {
 				String billid = Integer.toString(rs.getInt("billId"));

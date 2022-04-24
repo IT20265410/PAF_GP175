@@ -20,7 +20,7 @@ public class BillService {
 
 	Bill billObj = new Bill();
 
-	//view a particular customer details
+	//view a particular bill details
 	@GET
 	@Path("/{billId}")
 	@Produces(MediaType.TEXT_HTML)
@@ -28,7 +28,7 @@ public class BillService {
 		return billObj.viewBill(billId); 
 	}
 
-	//Add customer(registration)
+	//Add bill(registration)
 	@POST
 	@Path("/")
 	// To specify the input type as form data
