@@ -2,8 +2,6 @@
 
 Programming Applications and Frameworks Group Project (GID - 175)
 
-Introduction
-
 Workload Distribution
 
 1. IT20154158 - Wickramarathna D. G. N. L

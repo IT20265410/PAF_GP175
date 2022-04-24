@@ -2,9 +2,9 @@
 package model;
 
 import java.sql.*;
+import java.sql.Connection;
 
-
-public class Payment {
+public class Connections {
 
 	// A common method to connect to the DB
 	private Connection connect() {
@@ -13,14 +13,14 @@ public class Payment {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// Provide the correct details: DBServer/DBName, username, password
-			con = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/electrogrid", "root", "thulya123");
+			con = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/electrogrid", "root", "0752341290");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return con;
 	}
 
-	public String payment( String cardnumber, String cvv, String expdate, float amounts, int paycustomerid ) {
+	public String addConnection( String conname, String contype, String condesc, int conadminid ) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -29,25 +29,24 @@ public class Payment {
 			}
 			
 			// create a prepared statement
-			String query = " insert into payment (`paymentId`,`cardNumber`,`CVV`,`expDate`,`amount`,`payCustomerId`)"
-					+ " values (?, ?, ?, ?, ?, ?)";
+			String query = " insert into connections (`conId`,`conName`,`conType`,`conDesc`,`conAdminId`)"
+					+ " values (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			// binding values
 			preparedStmt.setInt(1, 0);
-			preparedStmt.setString(2, cardnumber);
-			preparedStmt.setString(3, cvv);
-			preparedStmt.setString(4, expdate);
-			preparedStmt.setFloat(5, amounts);
-			preparedStmt.setInt(6, paycustomerid);
+			preparedStmt.setString(2, conname);
+			preparedStmt.setString(3, contype);
+			preparedStmt.setString(4, condesc);
+			preparedStmt.setInt(5, conadminid);
 			
 		
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Payment added successfully";
+			output = "Connection registered successfully";
 		} catch (Exception e) {
-			output = "Error while adding the payment..";
+			output = "Error while registering the Connection.";
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -56,7 +55,7 @@ public class Payment {
 	
 
 	
-	public String updatePayment(String paymentid, String cardnumber, String cvv, String expdate, String amounts, String paycustomerid) {
+	public String updateConnections(String conid, String cname, String ctype, String cdesc, String conadminid) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -64,28 +63,27 @@ public class Payment {
 				return "Error while connecting to the database for updating.";
 			}
 			// create a prepared statement
-			String query = "UPDATE payment SET cardNumber=?,CVV=?,expDate=?,amount=?,payCustomerId=? WHERE paymentId=?";
+			String query = "UPDATE connections SET conName=?,conType=?,conDesc=?,conAdminId=? WHERE conId=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setString(1, cardnumber);
-			preparedStmt.setString(2, cvv);
-			preparedStmt.setString(3, expdate);
-			preparedStmt.setFloat(4, Float.parseFloat(amounts));
-			preparedStmt.setInt(5, Integer.parseInt(paycustomerid));
-			preparedStmt.setInt(6, Integer.parseInt(paymentid));
+			preparedStmt.setString(1, cname);
+			preparedStmt.setString(2, ctype);
+			preparedStmt.setString(3, cdesc);
+			preparedStmt.setInt(4, Integer.parseInt(conadminid));
+			preparedStmt.setInt(5, Integer.parseInt(conid));
 			
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Payment details updated successfully";
+			output = "Connection details updated successfully";
 		} catch (Exception e) {
-			output = "Error while updating the payment details.";
+			output = "Error while updating the connection details.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
 	
-	public String viewAllPayments() {
+	public String viewAllConnections() {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -94,28 +92,26 @@ public class Payment {
 			}
 			
 			// Prepare the html table to be displayed
-			output = "<table border='1'><tr><th>Card No</th><th>CVV</th>" + "<th>Expire Date</th>" + "<th>Amount</th>"
+			output = "<table border='1'><tr><th>Connection Name</th><th>Connection Type</th>" + "<th>Connection Description</th>"
 			+ "<th>Remove</th></tr>";
 
-			String query = "select * from payment";
+			String query = "select * from connections";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the rows in the result set
 			while (rs.next()) {
-				String paymentId = Integer.toString(rs.getInt("paymentId"));
-				String cardNumber = rs.getString("cardNumber");
-				String CVV = rs.getString("CVV");
-				String expDate = rs.getString("expDate");
-				String amount = Float.toString(rs.getFloat("amount"));
-				String payCustomerId = Integer.toString(rs.getInt("payCustomerId"));
+				String conId = Integer.toString(rs.getInt("conId"));
+				String conName = rs.getString("conName");
+				String conType = rs.getString("ConType");
+				String conDesc = rs.getString("condesc");
+				String conAdminId = Integer.toString(rs.getInt("conAdminId"));
 				
 				
 				// Add into the html table
-				output += "<tr><td>" + cardNumber + "</td>";
-				output += "<td>" + CVV + "</td>";
-				output += "<td>" + expDate + "</td>";
-				output += "<td>" + amount + "</td>";
+				output += "<tr><td>" + conName + "</td>";
+				output += "<td>" + conType + "</td>";
+				output += "<td>" + conDesc + "</td>";
 			
 				// buttons
 				output += "<td><input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>";
@@ -130,7 +126,7 @@ public class Payment {
 		return output;
 	}
 	
-	public String deletePayment(String paymentId) {
+	public String deleteConnection(String conId) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -138,16 +134,16 @@ public class Payment {
 				return "Error while connecting to the database for deleting.";
 			}
 			// create a prepared statement
-			String query = "delete from payment where paymentId=?";
+			String query = "delete from connections where conId=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, Integer.parseInt(paymentId));
+			preparedStmt.setInt(1, Integer.parseInt(conId));
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Payment details deleted successfully";
+			output = "Connection details deleted successfully";
 		} catch (Exception e) {
-			output = "Error while deleting the payment details.";
+			output = "Error while deleting the connection details.";
 			System.err.println(e.getMessage());
 		}
 		return output;
