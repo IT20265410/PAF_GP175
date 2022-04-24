@@ -100,7 +100,7 @@ public class Bill {
 		return output;
 	}
 	
-	public String updateBill(String issueDate, String unit, String balance, String amountToPay , String totalAmount, String customerId) {
+	public String updateBill(String billid, String issuedate, String units, String balances, String amountopay , String totalamount, String customerid) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -111,13 +111,13 @@ public class Bill {
 			String query = "UPDATE bill SET issueDate=?,unit=?,balance=?,amountToPay=?,totalAmount=?,customerId=? WHERE billId=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, 0);
-			preparedStmt.setString(2, issueDate);
-			preparedStmt.setString(3, unit);
-			preparedStmt.setString(4, balance);
-			preparedStmt.setString(5, amountToPay);
-			preparedStmt.setString(6, totalAmount);
-			preparedStmt.setString(7, customerId); 
+			preparedStmt.setString(1, issuedate);
+			preparedStmt.setInt(2, Integer.parseInt(units));
+			preparedStmt.setFloat(3, Float.parseFloat(balances));
+			preparedStmt.setFloat(4, Float.parseFloat(amountopay));
+			preparedStmt.setFloat(5, Float.parseFloat(totalamount));
+			preparedStmt.setInt(6, Integer.parseInt(customerid));
+			preparedStmt.setInt(7, Integer.parseInt(billid));
 			
 			// execute the statement
 			preparedStmt.execute();
@@ -142,7 +142,7 @@ public class Bill {
 			output = "<table border='1'><tr><th>Issue Date</th><th>Unit</th>" + "<th>Balance</th>"
 					+ "<th>Amount To Pay</th>" + "<th>Total Amount</th>"+ "<th>Customer Id</th>"+ "<th>Update</th>";
 
-			String query = "select * from users";
+			String query = "select * from bill";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
@@ -184,7 +184,7 @@ public class Bill {
 				return "Error while connecting to the database for deleting.";
 			}
 			// create a prepared statement
-			String query = "delete from users where userId=?";
+			String query = "delete from bill where billId=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
 			preparedStmt.setInt(1, Integer.parseInt(billId));

@@ -47,7 +47,7 @@ public class BillService {
 		return output;
 	}
 
-	//Update customer details
+	//Update bill details
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -66,11 +66,11 @@ public class BillService {
 		String totalAmount = BillObject.get("totalAmount").getAsString();
 		String customerId = BillObject.get("customerId").getAsString();
 
-		String output = billObj.updateBill(issueDate, unit, balance, amountToPay, totalAmount, customerId);
+		String output = billObj.updateBill(billId, issueDate, unit, balance, amountToPay, totalAmount, customerId);
 		return output;
 	}
 
-	//Admin side view all customers 
+	//Admin side view all bill 
 	@GET
 	@Path("/viewAllBill")
 	@Produces(MediaType.TEXT_HTML)
@@ -78,7 +78,7 @@ public class BillService {
 		return billObj.viewAllBill();
 	}
 
-	//Delete a customer account
+	//Delete a bill account
 	@DELETE
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
